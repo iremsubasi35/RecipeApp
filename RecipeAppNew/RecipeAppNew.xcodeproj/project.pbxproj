@@ -450,6 +450,7 @@
 				DEVELOPMENT_TEAM = 8FMTT8DQ4W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecipeAppNew/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Resimlerinize ulaşmak ve onları görmek isteriz.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -479,6 +480,7 @@
 				DEVELOPMENT_TEAM = 8FMTT8DQ4W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecipeAppNew/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Resimlerinize ulaşmak ve onları görmek isteriz.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

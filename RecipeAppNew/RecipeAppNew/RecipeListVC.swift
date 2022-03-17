@@ -37,7 +37,11 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableViewRecipes.delegate = self
         tableViewRecipes.dataSource = self
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addOnTap))
+        let image = UIImage(systemName: "plus")
+
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOnTap))
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
 
     }
 
@@ -46,8 +50,8 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "NewRecipeVC") as! NewRecipeVC
-        //self.navigationController?.pushViewController(viewController, animated: true)
-        self.navigationController?.present(viewController, animated: true, completion: nil)
+       self.navigationController?.pushViewController(viewController, animated: true)
+      //  self.navigationController?.present(viewController, animated: true, completion: nil)
     }
 
     private func setUpRecipes() {

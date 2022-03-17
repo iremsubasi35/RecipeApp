@@ -22,7 +22,6 @@ class RecipeDetailDescriptionCell: UITableViewCell {
 }
 
 
-
 class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableViewRecipeDetail: UITableView!
 
