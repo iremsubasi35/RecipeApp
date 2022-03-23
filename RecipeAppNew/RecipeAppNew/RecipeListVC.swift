@@ -11,8 +11,8 @@ import UIKit
 
 struct Recipe: Codable {
     let id: String
-    let title: String
-    let description: String
+    var title: String
+    var description: String
     var image: UIImage?
 
     enum CodingKeys: CodingKey {
@@ -28,7 +28,7 @@ class RecipeCell: UITableViewCell {
 
 }
 
-class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate, NewRecipeVCDelegate {
+class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableViewRecipes: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
@@ -52,6 +52,10 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
 
         fetchRecipes()
+
+        NotificationCenter.default.addObserver(forName: Notification.Name("RecipesShouldReload"), object: nil, queue: .main) { _ in
+            self.fetchRecipes()
+        }
     }
 
     @objc private func addOnTap() {
@@ -59,7 +63,6 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "NewRecipeVC") as! NewRecipeVC
-        viewController.delegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
       //  self.navigationController?.present(viewController, animated: true, completion: nil)
     }
@@ -107,7 +110,7 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         let currentRecipe = arrRecipes[indexPath.row]
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "RecipeDetailVC") as! RecipeDetailVC
-        viewController.recipe = currentRecipe
+        viewController.recipeId = currentRecipe.id
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

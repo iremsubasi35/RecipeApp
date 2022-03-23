@@ -26,13 +26,42 @@ class RecipeDetailDescriptionCell: UITableViewCell {
 class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableViewRecipeDetail: UITableView!
 
-    var recipe: Recipe!
+    var recipeId: String = ""
+
+    private let recipeStorage = RecipeStorage()
+    private var recipe: Recipe = Recipe(id: "", title: "", description: "", image: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchRecipe()
+
+        self.title = recipe.title
 
         tableViewRecipeDetail.delegate = self
         tableViewRecipeDetail.dataSource = self
+
+        let image = UIImage(systemName: "square.and.pencil")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(editOnTap))
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+
+        NotificationCenter.default.addObserver(forName: Notification.Name("RecipesShouldReload"), object: nil, queue: .main) { _ in
+            self.fetchRecipe()
+        }
+    }
+
+    private func fetchRecipe() {
+        guard let currentRecipe = recipeStorage.getRecipeById(id: recipeId) else {
+            fatalError("")
+        }
+        recipe = currentRecipe
+        recipe.image = recipeStorage.getImage(with: currentRecipe.id)
+        tableViewRecipeDetail.reloadData()
+    }
+
+    @objc private func editOnTap() {
+        let viewController: NewRecipeVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewRecipeVC") as! NewRecipeVC
+        viewController.recipe = recipe
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

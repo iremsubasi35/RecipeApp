@@ -8,19 +8,12 @@
 import Foundation
 import UIKit
 
-
-protocol NewRecipeVCDelegate: AnyObject {
-    func shouldReloadRecipes()
-}
-
-
 class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
 
     private let recipeStorage = RecipeStorage()
-
-    weak var delegate: NewRecipeVCDelegate?
-
     private var selectedImage: UIImage? = nil
+
+    var recipe: Recipe?
 
     @IBOutlet weak var imViewRecipe: UIImageView!
     @IBOutlet weak var textfieldTitle: UITextField!
@@ -62,7 +55,22 @@ class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         imViewRecipe.addGestureRecognizer(tapGesture)
 
         textviewDescription.delegate = self
+        fillInputElementsIfNeeded()
         validateFields()
+
+        if let _ = recipe {
+            self.title = "Tarif Güncelleme"
+        } else {
+            self.title = "Yeni Tarif"
+        }
+
+    }
+
+    private func fillInputElementsIfNeeded() {
+        guard let recipe = self.recipe else { return }
+        textfieldTitle.text = recipe.title
+        textviewDescription.text = recipe.description
+        imViewRecipe.image = recipe.image ?? UIImage(named: "EmptyRecipe")
     }
 
     func textViewDidChange(_ textView: UITextView) {
@@ -99,8 +107,16 @@ class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
             return
         }
 
-        recipeStorage.saveRecipe(title: title, description: description, image: selectedImage)
-        self.delegate?.shouldReloadRecipes()
+        if var recipe = recipe {
+            recipe.description = description
+            recipe.title = title
+            recipe.image = selectedImage
+            recipeStorage.updateRecipe(recipe)
+        } else {
+            recipeStorage.createNewRecipe(title: title, description: description, image: selectedImage)
+        }
+
+        NotificationCenter.default.post(name: Notification.Name("RecipesShouldReload"), object: nil)
         navigationController?.popViewController(animated: true)
     }
 

@@ -119,11 +119,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Mzg-Pu-qZQ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Mzg-Pu-qZQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeDetailImageCell" rowHeight="209" id="m8w-vz-ZJg" customClass="RecipeDetailImageCell" customModule="RecipeAppNew" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RecipeDetailImageCell" rowHeight="209" id="m8w-vz-ZJg" customClass="RecipeDetailImageCell" customModule="RecipeAppNew" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="320" height="209"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="m8w-vz-ZJg" id="VTt-gM-JBf">
@@ -147,7 +147,7 @@
                                             <outlet property="imView" destination="jUc-dv-wBh" id="sTU-6K-PtB"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeDetailTitleCell" rowHeight="50" id="LvT-lo-OmM" customClass="RecipeDetailTitleCell" customModule="RecipeAppNew" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RecipeDetailTitleCell" rowHeight="50" id="LvT-lo-OmM" customClass="RecipeDetailTitleCell" customModule="RecipeAppNew" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="253.5" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LvT-lo-OmM" id="bFh-c9-Suh">
@@ -171,7 +171,7 @@
                                             <outlet property="lblTitle" destination="LMT-ea-tjX" id="5Ks-bV-YkL"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeDetailDescriptionCell" rowHeight="162" id="ngl-6q-whE" customClass="RecipeDetailDescriptionCell" customModule="RecipeAppNew" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RecipeDetailDescriptionCell" rowHeight="162" id="ngl-6q-whE" customClass="RecipeDetailDescriptionCell" customModule="RecipeAppNew" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="303.5" width="320" height="162"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ngl-6q-whE" id="Arl-1q-06u">

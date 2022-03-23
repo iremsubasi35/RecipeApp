@@ -11,6 +11,11 @@ import UIKit
 
 class RecipeStorage {
 
+    func getRecipeById(id: String) -> Recipe? {
+        let currentRecipes = readRecipes()
+        return currentRecipes.first { $0.id == id }
+    }
+
     func getImage(with id: String) -> UIImage? {
 
         NSLog("Current Thread: \(Thread.current)")
@@ -54,7 +59,7 @@ class RecipeStorage {
         }
     }
 
-    func saveRecipe(title: String, description: String, image: UIImage?) {
+    func createNewRecipe(title: String, description: String, image: UIImage?) {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         let filePath = documentsDirectory.appendingPathComponent("RecipeList").appendingPathExtension("json")
@@ -76,6 +81,43 @@ class RecipeStorage {
                 let imageData =  image.jpegData(compressionQuality: 1.0)
                 let imageURL = documentsDirectory.appendingPathComponent(id).appendingPathExtension("jpg")
                 try imageData?.write(to: imageURL)
+            }
+
+        } catch let error {
+            NSLog("Hata : \(error)")
+        }
+    }
+
+    func updateRecipe(_ recipe: Recipe) {
+        var newRecipes: [Recipe] = []
+        let currentRecipes = readRecipes()
+        currentRecipes.forEach {
+            if $0.id == recipe.id {
+                newRecipes.append(recipe)
+            } else {
+                newRecipes.append($0)
+            }
+        }
+
+        guard let jsonData = try? JSONEncoder().encode(newRecipes)
+        else { return }
+
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let filePath = documentsDirectory.appendingPathComponent("RecipeList").appendingPathExtension("json")
+        if !FileManager.default.fileExists(atPath: filePath.path) {
+            FileManager.default.createFile(atPath: filePath.path, contents: nil, attributes: nil)
+        }
+
+        do {
+            try jsonData.write(to: filePath)
+            if let image = recipe.image {
+                let imageData =  image.jpegData(compressionQuality: 1.0)
+                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+                try imageData?.write(to: imageURL)
+            } else {
+                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+                try? FileManager.default.removeItem(at: imageURL)
             }
 
         } catch let error {
