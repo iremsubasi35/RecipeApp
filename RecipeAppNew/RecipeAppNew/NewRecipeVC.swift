@@ -8,7 +8,19 @@
 import Foundation
 import UIKit
 
+
+protocol NewRecipeVCDelegate: AnyObject {
+    func shouldReloadRecipes()
+}
+
+
 class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+
+    private let recipeStorage = RecipeStorage()
+
+    weak var delegate: NewRecipeVCDelegate?
+
+    private var selectedImage: UIImage? = nil
 
     @IBOutlet weak var imViewRecipe: UIImageView!
     @IBOutlet weak var textfieldTitle: UITextField!
@@ -82,13 +94,21 @@ class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
     }
 
     @IBAction func btnSaveOnTap() {
-        NSLog("\(textfieldTitle.text) \n \(textviewDescription.text)")
+        guard let title = textfieldTitle.text,
+                let description = textviewDescription.text else {
+            return
+        }
+
+        recipeStorage.saveRecipe(title: title, description: description, image: selectedImage)
+        self.delegate?.shouldReloadRecipes()
+        navigationController?.popViewController(animated: true)
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         self.imViewRecipe.image = image
+        self.selectedImage = image
         NSLog("Image: \(image)")
     }
 

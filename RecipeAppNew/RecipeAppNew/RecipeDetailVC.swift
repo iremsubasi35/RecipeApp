@@ -22,6 +22,7 @@ class RecipeDetailDescriptionCell: UITableViewCell {
 }
 
 
+
 class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableViewRecipeDetail: UITableView!
 
@@ -41,7 +42,7 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeDetailImageCell", for: indexPath) as! RecipeDetailImageCell
-            cell.imView.image = recipe.image
+            cell.imView.image = recipe.image ?? UIImage(named: "EmptyRecipe")
             return cell
         } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeDetailTitleCell", for: indexPath) as! RecipeDetailTitleCell

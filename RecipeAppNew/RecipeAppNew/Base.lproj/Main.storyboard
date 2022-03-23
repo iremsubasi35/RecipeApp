@@ -14,7 +14,7 @@
             <objects>
                 <navigationController id="RSX-ab-OFl" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mzv-ag-1sj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -44,7 +44,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kokorec" translatesAutoresizingMaskIntoConstraints="NO" id="CP7-U9-72f">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyRecipe" translatesAutoresizingMaskIntoConstraints="NO" id="CP7-U9-72f">
                                                     <rect key="frame" x="16" y="16" width="128" height="138"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="128" id="pIq-uc-PBA"/>
@@ -86,17 +86,24 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="yB5-bI-l2y">
+                                <rect key="frame" x="141.5" y="243.5" width="37" height="37"/>
+                                <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2qa-k7-Kgk"/>
                         <constraints>
                             <constraint firstItem="2qa-k7-Kgk" firstAttribute="bottom" secondItem="BzP-dc-8no" secondAttribute="bottom" id="9XT-H0-lJF"/>
                             <constraint firstItem="BzP-dc-8no" firstAttribute="top" secondItem="2qa-k7-Kgk" secondAttribute="top" id="C8O-4K-esS"/>
                             <constraint firstItem="2qa-k7-Kgk" firstAttribute="trailing" secondItem="BzP-dc-8no" secondAttribute="trailing" id="Fb6-xK-SVL"/>
+                            <constraint firstItem="yB5-bI-l2y" firstAttribute="centerY" secondItem="2qa-k7-Kgk" secondAttribute="centerY" id="kI9-pO-764"/>
+                            <constraint firstItem="yB5-bI-l2y" firstAttribute="centerX" secondItem="2qa-k7-Kgk" secondAttribute="centerX" id="pOv-Uq-Rjz"/>
                             <constraint firstItem="BzP-dc-8no" firstAttribute="leading" secondItem="2qa-k7-Kgk" secondAttribute="leading" id="yIT-z1-fZi"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="R3h-My-OjY"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="yB5-bI-l2y" id="Qlx-Rh-zi9"/>
                         <outlet property="tableViewRecipes" destination="BzP-dc-8no" id="RQb-Vc-CzB"/>
                     </connections>
                 </viewController>
@@ -123,8 +130,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="209"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kokorec" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-dv-wBh">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyRecipe" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-dv-wBh">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="209"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -363,7 +372,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="kokorec" width="800" height="600"/>
+        <image name="EmptyRecipe" width="2500" height="1668"/>
         <image name="photo.on.rectangle.angled" catalog="system" width="128" height="100"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
