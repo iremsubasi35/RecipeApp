@@ -93,28 +93,28 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         self.arrRecipes = []
         tableViewRecipes.reloadData()
 
-        self.tableViewRecipes.isHidden = true
-        self.lblEmptyScreen.isHidden = true
-        
+        updateUI()
+
         recipeStorage.readRecipesAsync { recipes in
             self.arrRecipes = recipes
             self.tableViewRecipes.reloadData()
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
-
-            if self.arrRecipes.isEmpty {
-                self.tableViewRecipes.isHidden = true
-                self.lblEmptyScreen.isHidden = false
-            } else {
-                self.tableViewRecipes.isHidden = false
-                self.lblEmptyScreen.isHidden = true
-            }
+            self.updateUI()
         }
-
-
-
     }
 
+    private func updateUI() {
+        self.tableViewRecipes.isHidden = true
+        self.lblEmptyScreen.isHidden = true
+        if self.arrRecipes.isEmpty {
+            self.tableViewRecipes.isHidden = true
+            self.lblEmptyScreen.isHidden = false
+        } else {
+            self.tableViewRecipes.isHidden = false
+            self.lblEmptyScreen.isHidden = true
+        }
+    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 170
@@ -123,6 +123,16 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrRecipes.count
     }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        let deletingRecipe = arrRecipes[indexPath.row]
+        arrRecipes.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        recipeStorage.deleteRecipe(deletingRecipe.id)
+        updateUI()
+    }
+
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell

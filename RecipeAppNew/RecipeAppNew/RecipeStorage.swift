@@ -143,15 +143,14 @@ class RecipeStorage {
 
         do {
             try jsonData.write(to: filePath)
-
-//            if let image = recipe.image {
-//                let imageData =  image.jpegData(compressionQuality: 1.0)
-//                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
-//                try imageData?.write(to: imageURL)
-//            } else {
-//                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
-//                try? FileManager.default.removeItem(at: imageURL)
-//            }
+            if let image = image {
+                let imageData =  image.jpegData(compressionQuality: 1.0)
+                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+                try imageData?.write(to: imageURL)
+            } else {
+                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+                try? FileManager.default.removeItem(at: imageURL)
+            }
 
         } catch let error {
             NSLog("Hata : \(error)")
