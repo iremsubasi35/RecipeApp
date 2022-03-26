@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 
+
 class RecipeStorage {
 
     func getRecipeById(id: String) -> Recipe? {
@@ -16,18 +17,18 @@ class RecipeStorage {
         return currentRecipes.first { $0.id == id }
     }
 
-    func getImage(with id: String) -> UIImage? {
-
-        NSLog("Current Thread: \(Thread.current)")
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        let filePath = documentsDirectory.appendingPathComponent(id).appendingPathExtension("jpg")
-        guard let imageData = try? Data(contentsOf: filePath), let image = UIImage(data: imageData) else {
-
-            return nil
-        }
-        return image
-    }
+//    func getImage(with id: String) -> UIImage? {
+//
+//        NSLog("Current Thread: \(Thread.current)")
+//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        let documentsDirectory = paths[0]
+//        let filePath = documentsDirectory.appendingPathComponent(id).appendingPathExtension("jpg")
+//        guard let imageData = try? Data(contentsOf: filePath), let image = UIImage(data: imageData) else {
+//
+//            return nil
+//        }
+//        return image
+//    }
 
     func readRecipes() -> [Recipe] {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -49,8 +50,8 @@ class RecipeStorage {
             let recipes = self.readRecipes()
 
             recipes.forEach { recipe in
-                let image = self.getImage(with: recipe.id)
-                let newRecipe = Recipe(id: recipe.id, title: recipe.title, description: recipe.description, image: image)
+             //   let image = self.getImage(with: recipe.id)
+                let newRecipe = Recipe(id: recipe.id, title: recipe.title, description: recipe.description)
                 newRecipes.append(newRecipe)
             }
             DispatchQueue.main.async {
@@ -88,7 +89,7 @@ class RecipeStorage {
         }
     }
 
-    func updateRecipe(_ recipe: Recipe) {
+    func updateRecipe(_ recipe: Recipe, image: UIImage?) {
         var newRecipes: [Recipe] = []
         let currentRecipes = readRecipes()
         currentRecipes.forEach {
@@ -111,14 +112,15 @@ class RecipeStorage {
 
         do {
             try jsonData.write(to: filePath)
-            if let image = recipe.image {
-                let imageData =  image.jpegData(compressionQuality: 1.0)
-                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
-                try imageData?.write(to: imageURL)
-            } else {
-                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
-                try? FileManager.default.removeItem(at: imageURL)
-            }
+
+//            if let image = recipe.image {
+//                let imageData =  image.jpegData(compressionQuality: 1.0)
+//                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+//                try imageData?.write(to: imageURL)
+//            } else {
+//                let imageURL = documentsDirectory.appendingPathComponent(recipe.id).appendingPathExtension("jpg")
+//                try? FileManager.default.removeItem(at: imageURL)
+//            }
 
         } catch let error {
             NSLog("Hata : \(error)")

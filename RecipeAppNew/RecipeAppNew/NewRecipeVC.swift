@@ -70,7 +70,7 @@ class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         guard let recipe = self.recipe else { return }
         textfieldTitle.text = recipe.title
         textviewDescription.text = recipe.description
-        imViewRecipe.image = recipe.image ?? UIImage(named: "EmptyRecipe")
+     //   imViewRecipe.image = recipe.image ?? UIImage(named: "EmptyRecipe")
     }
 
     func textViewDidChange(_ textView: UITextView) {
@@ -110,8 +110,7 @@ class  NewRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         if var recipe = recipe {
             recipe.description = description
             recipe.title = title
-            recipe.image = selectedImage
-            recipeStorage.updateRecipe(recipe)
+            recipeStorage.updateRecipe(recipe, image: selectedImage)
         } else {
             recipeStorage.createNewRecipe(title: title, description: description, image: selectedImage)
         }

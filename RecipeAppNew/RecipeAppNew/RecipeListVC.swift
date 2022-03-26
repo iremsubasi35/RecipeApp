@@ -7,16 +7,23 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 
 struct Recipe: Codable {
     let id: String
     var title: String
     var description: String
-    var image: UIImage?
 
     enum CodingKeys: CodingKey {
         case id, title, description
+    }
+
+    func imagePath() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let filePath = documentsDirectory.appendingPathComponent(id).appendingPathExtension("jpg")
+        return filePath
     }
 }
 
@@ -99,7 +106,9 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
         let currentRecipe = arrRecipes[indexPath.row]
         cell.lblDescription.text = currentRecipe.description
-        cell.imViewRecipe.image =  currentRecipe.image ?? UIImage(named: "EmptyRecipe")
+        let imagePath = currentRecipe.imagePath()
+        cell.imViewRecipe.kf.setImage(with: imagePath, placeholder:  UIImage(named: "EmptyRecipe"))
+       // cell.imViewRecipe.image =  currentRecipe.image ?? UIImage(named: "EmptyRecipe")
         cell.lblTitle.text = currentRecipe.title
         return cell
     }

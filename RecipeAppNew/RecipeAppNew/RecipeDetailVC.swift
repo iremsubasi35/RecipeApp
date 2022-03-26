@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 class RecipeDetailImageCell: UITableViewCell {
     @IBOutlet weak var imView: UIImageView!
@@ -29,7 +30,7 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var recipeId: String = ""
 
     private let recipeStorage = RecipeStorage()
-    private var recipe: Recipe = Recipe(id: "", title: "", description: "", image: nil)
+    private var recipe: Recipe = Recipe(id: "", title: "", description: "")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +55,6 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             fatalError("")
         }
         recipe = currentRecipe
-        recipe.image = recipeStorage.getImage(with: currentRecipe.id)
         tableViewRecipeDetail.reloadData()
     }
 
@@ -71,7 +71,8 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeDetailImageCell", for: indexPath) as! RecipeDetailImageCell
-            cell.imView.image = recipe.image ?? UIImage(named: "EmptyRecipe")
+            let imagePath = recipe.imagePath()
+            cell.imView.kf.setImage(with: imagePath, placeholder:  UIImage(named: "EmptyRecipe"))
             return cell
         } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeDetailTitleCell", for: indexPath) as! RecipeDetailTitleCell
