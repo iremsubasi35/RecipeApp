@@ -60,6 +60,37 @@ class RecipeStorage {
         }
     }
 
+    func deleteRecipe(_ recipeId: String) {
+        let currentRecipes = readRecipes()
+        var newRecipes: [Recipe] = []
+
+        currentRecipes.forEach {
+            if $0.id != recipeId {
+                newRecipes.append($0)
+            } else {
+                let imagePath = $0.imagePath()
+                try? FileManager.default.removeItem(at: imagePath)
+            }
+        }
+
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let filePath = documentsDirectory.appendingPathComponent("RecipeList").appendingPathExtension("json")
+        if !FileManager.default.fileExists(atPath: filePath.path) {
+            FileManager.default.createFile(atPath: filePath.path, contents: nil, attributes: nil)
+        }
+
+        guard let jsonData = try? JSONEncoder().encode(newRecipes)
+        else { return }
+
+        do {
+            try jsonData.write(to: filePath)
+
+        } catch let error {
+            NSLog("Hata : \(error)")
+        }
+    }
+
     func createNewRecipe(title: String, description: String, image: UIImage?) {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]

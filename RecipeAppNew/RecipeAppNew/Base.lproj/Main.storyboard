@@ -14,7 +14,7 @@
             <objects>
                 <navigationController id="RSX-ab-OFl" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mzv-ag-1sj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -90,12 +90,22 @@
                                 <rect key="frame" x="141.5" y="243.5" width="37" height="37"/>
                                 <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Henüz hiç bir tarif eklemediniz. Eklemek için ekranın sağ üst köşesinde görünen + tuşuna basabilirsiniz." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cwi-aQ-Slg">
+                                <rect key="frame" x="16" y="60" width="288" height="404"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2qa-k7-Kgk"/>
                         <constraints>
                             <constraint firstItem="2qa-k7-Kgk" firstAttribute="bottom" secondItem="BzP-dc-8no" secondAttribute="bottom" id="9XT-H0-lJF"/>
+                            <constraint firstItem="Cwi-aQ-Slg" firstAttribute="leading" secondItem="2qa-k7-Kgk" secondAttribute="leading" constant="16" id="A8O-ml-pQI"/>
                             <constraint firstItem="BzP-dc-8no" firstAttribute="top" secondItem="2qa-k7-Kgk" secondAttribute="top" id="C8O-4K-esS"/>
                             <constraint firstItem="2qa-k7-Kgk" firstAttribute="trailing" secondItem="BzP-dc-8no" secondAttribute="trailing" id="Fb6-xK-SVL"/>
+                            <constraint firstItem="Cwi-aQ-Slg" firstAttribute="top" secondItem="2qa-k7-Kgk" secondAttribute="top" constant="16" id="HEb-5M-dp8"/>
+                            <constraint firstItem="2qa-k7-Kgk" firstAttribute="bottom" secondItem="Cwi-aQ-Slg" secondAttribute="bottom" constant="16" id="WgE-rh-nog"/>
+                            <constraint firstAttribute="trailing" secondItem="Cwi-aQ-Slg" secondAttribute="trailing" constant="16" id="btN-OL-y4L"/>
                             <constraint firstItem="yB5-bI-l2y" firstAttribute="centerY" secondItem="2qa-k7-Kgk" secondAttribute="centerY" id="kI9-pO-764"/>
                             <constraint firstItem="yB5-bI-l2y" firstAttribute="centerX" secondItem="2qa-k7-Kgk" secondAttribute="centerX" id="pOv-Uq-Rjz"/>
                             <constraint firstItem="BzP-dc-8no" firstAttribute="leading" secondItem="2qa-k7-Kgk" secondAttribute="leading" id="yIT-z1-fZi"/>
@@ -104,6 +114,7 @@
                     <navigationItem key="navigationItem" id="R3h-My-OjY"/>
                     <connections>
                         <outlet property="activityIndicator" destination="yB5-bI-l2y" id="Qlx-Rh-zi9"/>
+                        <outlet property="lblEmptyScreen" destination="Cwi-aQ-Slg" id="ec9-9m-p9E"/>
                         <outlet property="tableViewRecipes" destination="BzP-dc-8no" id="RQb-Vc-CzB"/>
                     </connections>
                 </viewController>

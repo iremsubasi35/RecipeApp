@@ -38,6 +38,7 @@ class RecipeCell: UITableViewCell {
 class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableViewRecipes: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var lblEmptyScreen: UILabel!
 
     private let recipeStorage = RecipeStorage()
     private var arrRecipes: [Recipe] = []
@@ -78,18 +79,39 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         fetchRecipes()
     }
 
+    /**
+     -------------------------  93,      104
+     -------------------------------96-------- Finish
+
+
+     */
+
     private func fetchRecipes() {
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
 
         self.arrRecipes = []
         tableViewRecipes.reloadData()
+
+        self.tableViewRecipes.isHidden = true
+        self.lblEmptyScreen.isHidden = true
+        
         recipeStorage.readRecipesAsync { recipes in
             self.arrRecipes = recipes
             self.tableViewRecipes.reloadData()
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
+
+            if self.arrRecipes.isEmpty {
+                self.tableViewRecipes.isHidden = true
+                self.lblEmptyScreen.isHidden = false
+            } else {
+                self.tableViewRecipes.isHidden = false
+                self.lblEmptyScreen.isHidden = true
+            }
         }
+
+
 
     }
 

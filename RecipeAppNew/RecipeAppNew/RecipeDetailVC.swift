@@ -41,8 +41,16 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableViewRecipeDetail.delegate = self
         tableViewRecipeDetail.dataSource = self
 
-        let image = UIImage(systemName: "square.and.pencil")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(editOnTap))
+        let imageEdit = UIImage(systemName: "square.and.pencil")
+        let btnItemEdit = UIBarButtonItem(image: imageEdit, style: .plain, target: self, action: #selector(editOnTap))
+
+        let imageDelete = UIImage(systemName: "trash")
+        let btnItemDelete = UIBarButtonItem(image: imageDelete, style: .plain, target: self, action: #selector(deleteOnTap))
+
+        self.navigationItem.rightBarButtonItems = [btnItemEdit, btnItemDelete]
+    //   self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(editOnTap))
+
+
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
 
         NotificationCenter.default.addObserver(forName: Notification.Name("RecipesShouldReload"), object: nil, queue: .main) { _ in
@@ -52,7 +60,7 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     private func fetchRecipe() {
         guard let currentRecipe = recipeStorage.getRecipeById(id: recipeId) else {
-            fatalError("")
+           return
         }
         recipe = currentRecipe
         tableViewRecipeDetail.reloadData()
@@ -62,6 +70,44 @@ class RecipeDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let viewController: NewRecipeVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewRecipeVC") as! NewRecipeVC
         viewController.recipe = recipe
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+
+//    var dialogMessage = UIAlertController(title: "Confirm", message: "Are you sure you want to delete this?", preferredStyle: .alert)
+//    // Create OK button with action handler
+//    let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+//        print("Ok button tapped")
+//    })
+//    // Create Cancel button with action handlder
+//    let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+//        print("Cancel button tapped")
+//    }
+//    //Add OK and Cancel button to an Alert object
+//    dialogMessage.addAction(ok)
+//    dialogMessage.addAction(cancel)
+//    // Present alert message to user
+//    self.present(dialogMessage, animated: true, completion: nil)
+
+    @objc private func deleteOnTap() {
+
+        let alertView = UIAlertController(title: "Uyarı", message: "Bu tarifi silmek üzeresiniz. Emin misiniz?", preferredStyle: .alert)
+
+        let confirmButton = UIAlertAction(title: "Evet", style: .default) { _ in
+            self.recipeStorage.deleteRecipe(self.recipeId)
+            NotificationCenter.default.post(name: Notification.Name("RecipesShouldReload"), object: nil)
+            self.navigationController?.popViewController(animated: true)
+        }
+
+        let cancelButton = UIAlertAction(title: "Hayır", style: .cancel) { _ in
+            NSLog("Silelim")
+        }
+
+        alertView.addAction(confirmButton)
+        alertView.addAction(cancelButton)
+
+        self.present(alertView, animated: true) {
+            NSLog("Alerti gösterdim")
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
