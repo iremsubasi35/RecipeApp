@@ -2,7 +2,7 @@
 //  NewRecipeVC.swift
 //  RecipeAppNew
 //
-//  Created by aybek can kaya on 11.03.2022.
+//  Created by irem subasi on 11.03.2022.
 //
 
 import Foundation

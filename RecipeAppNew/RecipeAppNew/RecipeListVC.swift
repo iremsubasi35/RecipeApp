@@ -2,7 +2,7 @@
 //  RecipeListVC.swift
 //  RecipeAppNew
 //
-//  Created by aybek can kaya on 10.03.2022.
+//  Created by irem subasi on 10.03.2022.
 //
 
 import Foundation
@@ -82,12 +82,34 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
 
     func updateSearchResults(for searchController: UISearchController) {
-        NSLog("Search Text: \(searchController.searchBar.text)")
         search(for: searchController.searchBar.text)
     }
 
     private func search(for text: String?) {
+        guard let text = text, !text.isEmpty else {
+            filteredRecipes = arrRecipes
+            self.tableViewRecipes.reloadData()
+            return
+        }
 
+        let textSearch = text.lowercased()
+            .replacingOccurrences(of: "i̇", with: "i")
+
+        filteredRecipes = []
+        for index in 0 ..< arrRecipes.count {
+            let currentElement = arrRecipes[index]
+            let title = currentElement.title
+                .lowercased()
+                .replacingOccurrences(of: "i̇", with: "i")
+            if title.contains(textSearch.lowercased()) {
+                filteredRecipes.append(currentElement)
+                NSLog("Search Text: \(text.lowercased()), Title: \(currentElement.title.lowercased()), EVET")
+            } else {
+                NSLog("Search Text: \(text.lowercased()), Title: \(currentElement.title.lowercased()), HAYIR")
+            }
+        }
+
+        self.tableViewRecipes.reloadData()
     }
 
     @objc private func addOnTap() {
@@ -117,6 +139,7 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             self.tableViewRecipes.reloadData()
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
+            self.search(for: nil)
             self.updateUI()
         }
     }
@@ -124,7 +147,11 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     private func updateUI() {
         self.tableViewRecipes.isHidden = true
         self.lblEmptyScreen.isHidden = true
-        if self.arrRecipes.isEmpty {
+        guard self.activityIndicator.isHidden == true else {
+            return
+        }
+
+        if self.filteredRecipes.isEmpty {
             self.tableViewRecipes.isHidden = true
             self.lblEmptyScreen.isHidden = false
         } else {
@@ -141,19 +168,40 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         return filteredRecipes.count
     }
 
+    private func findIndexOf(element: Recipe, in array: [Recipe]) -> Int {
+        var foundIndex: Int = 0
+        for index in 0 ..< array.count {
+            let currentElement = array[index]
+            if currentElement.id == element.id {
+                foundIndex = index
+            }
+        }
+        return foundIndex
+    }
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         let deletingRecipe = filteredRecipes[indexPath.row]
-        arrRecipes.remove(at: indexPath.row)
+        filteredRecipes.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        let index = findIndexOf(element: deletingRecipe, in: arrRecipes)
+        arrRecipes.remove(at: index)
+
         recipeStorage.deleteRecipe(deletingRecipe.id)
-        updateUI()
+
+
+
+//        arrRecipes.remove(at: indexPath.row)
+//        tableView.deleteRows(at: [indexPath], with: .automatic)
+//        recipeStorage.deleteRecipe(deletingRecipe.id)
+     //   updateUI()
     }
 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
-        let currentRecipe = arrRecipes[indexPath.row]
+        let currentRecipe = filteredRecipes[indexPath.row]
         cell.lblDescription.text = currentRecipe.description
         let imagePath = currentRecipe.imagePath()
         cell.imViewRecipe.kf.setImage(with: imagePath, placeholder:  UIImage(named: "EmptyRecipe"))
@@ -165,7 +213,7 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("Index Selected: \(indexPath.row)")
 
-        let currentRecipe = arrRecipes[indexPath.row]
+        let currentRecipe = filteredRecipes[indexPath.row]
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "RecipeDetailVC") as! RecipeDetailVC
         viewController.recipeId = currentRecipe.id

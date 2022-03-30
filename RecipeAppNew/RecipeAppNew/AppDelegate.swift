@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  RecipeAppNew
 //
-//  Created by aybek can kaya on 10.03.2022.
+//  Created by irem subasi on 10.03.2022.
 //
 
 import UIKit
