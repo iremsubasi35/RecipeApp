@@ -35,13 +35,15 @@ class RecipeCell: UITableViewCell {
 
 }
 
-class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
     @IBOutlet weak var tableViewRecipes: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var lblEmptyScreen: UILabel!
 
     private let recipeStorage = RecipeStorage()
+
     private var arrRecipes: [Recipe] = []
+    private var filteredRecipes: [Recipe] = []
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -50,10 +52,23 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let attributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white
+        ]
+
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes(attributes, for: .normal)
+
         self.title = "Tarifler"
 
         tableViewRecipes.delegate = self
         tableViewRecipes.dataSource = self
+
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Tarif Arayın"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
 
         let image = UIImage(systemName: "plus")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOnTap))
@@ -64,6 +79,15 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         NotificationCenter.default.addObserver(forName: Notification.Name("RecipesShouldReload"), object: nil, queue: .main) { _ in
             self.fetchRecipes()
         }
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        NSLog("Search Text: \(searchController.searchBar.text)")
+        search(for: searchController.searchBar.text)
+    }
+
+    private func search(for text: String?) {
+
     }
 
     @objc private func addOnTap() {
@@ -78,13 +102,6 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func shouldReloadRecipes() {
         fetchRecipes()
     }
-
-    /**
-     -------------------------  93,      104
-     -------------------------------96-------- Finish
-
-
-     */
 
     private func fetchRecipes() {
         self.activityIndicator.isHidden = false
@@ -121,12 +138,12 @@ class RecipeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrRecipes.count
+        return filteredRecipes.count
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        let deletingRecipe = arrRecipes[indexPath.row]
+        let deletingRecipe = filteredRecipes[indexPath.row]
         arrRecipes.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         recipeStorage.deleteRecipe(deletingRecipe.id)
